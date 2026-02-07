@@ -1,9 +1,7 @@
-
-
 name: 'AWS_dbt_Snowflake'
 version: '1.0.0'
 
-# This setting configures which "profile" dbt uses for this project.
+
 profile: 'AWS_dbt_Snowflake'
 
 model-paths: ["models"]
@@ -18,9 +16,16 @@ clean-targets:         # directories to be removed by `dbt clean`
   - "dbt_packages"
 
 
-
 models:
   AWS_dbt_Snowflake:
-    
-    example:
-      +materialized: view
+    bronze:
+      +materialized: table
+      +schema: bronze
+    silver:
+      +materialized: table
+      +schema: silver
+    gold:
+      +materialized: table
+      +schema: gold
+      ephemeral:
+        +materialized: ephemeral

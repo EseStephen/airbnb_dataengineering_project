@@ -1,0 +1,22 @@
+{{ config(
+    materialized='incremental',
+    keys='HOST_ID'
+) }}
+
+SELECT
+    HOST_ID,
+    HOST_NAME,
+    SPLIT_PART(HOST_NAME, ' ', 1) AS HOST_NAME_FIRST_NAME,
+    SPLIT_PART(HOST_NAME, ' ', 2) AS HOST_NAME_LAST_NAME,
+    HOST_SINCE,
+    IS_SUPERHOST,
+    RESPONSE_RATE,
+    CASE 
+    WHEN RESPONSE_RATE > 95 THEN 'VERY GOOD'
+    WHEN RESPONSE_RATE > 80 THEN 'GOOD'
+    WHEN RESPONSE_RATE > 60 THEN 'FAIR'
+    ELSE 'POOR'
+    END AS RESPONSE_RATE_QUALITY,
+    CREATED_AT
+FROM 
+    {{ ref('bronze_hosts') }}

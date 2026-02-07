@@ -1,5 +1,0 @@
-models:
-  bronze:
-    
-    example:
-      +materialized: table
